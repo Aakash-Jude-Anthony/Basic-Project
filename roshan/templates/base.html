@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>{% block title %}Catalog Manager{% endblock %}</title>
+  <style>
+    /* ── Tokens ─────────────────────────────── */
+    :root {
+      --bg:        #F7F8FA;
+      --surface:   #FFFFFF;
+      --border:    #E2E6EF;
+      --accent:    #4F6EF7;
+      --accent-dk: #3A56D4;
+      --danger:    #E84545;
+      --success:   #27AE60;
+      --warning:   #F39C12;
+      --text:      #1A1D2E;
+      --muted:     #7A8099;
+      --nav-bg:    #1A1D2E;
+      --nav-text:  #C8CEDF;
+      --nav-active:#4F6EF7;
+      --radius:    8px;
+      --shadow:    0 1px 4px rgba(0,0,0,.08);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+    }
+
+    /* ── Sidebar Nav ─────────────────────────── */
+    nav {
+      width: 220px;
+      min-height: 100vh;
+      background: var(--nav-bg);
+      display: flex;
+      flex-direction: column;
+      padding: 0;
+      flex-shrink: 0;
+    }
+
+    .nav-brand {
+      padding: 24px 20px 20px;
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: .5px;
+      color: #fff;
+      border-bottom: 1px solid rgba(255,255,255,.08);
+    }
+    .nav-brand span { color: var(--nav-active); }
+
+    .nav-section {
+      padding: 18px 12px 6px;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      color: rgba(200,206,223,.4);
+      font-weight: 600;
+    }
+
+    nav a {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 20px;
+      color: var(--nav-text);
+      text-decoration: none;
+      font-size: 14px;
+      border-left: 3px solid transparent;
+      transition: background .15s, color .15s;
+    }
+    nav a:hover { background: rgba(255,255,255,.06); color: #fff; }
+    nav a.active {
+      background: rgba(79,110,247,.15);
+      color: #fff;
+      border-left-color: var(--nav-active);
+      font-weight: 600;
+    }
+
+    /* ── Main ────────────────────────────────── */
+    main {
+      flex: 1;
+      padding: 32px 36px;
+      overflow-x: auto;
+    }
+
+    .page-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 24px;
+    }
+    .page-header h1 {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--text);
+    }
+    .page-header p {
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    /* ── Buttons ─────────────────────────────── */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 9px 18px;
+      border-radius: var(--radius);
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      text-decoration: none;
+      transition: opacity .15s, transform .1s;
+    }
+    .btn:hover { opacity: .88; transform: translateY(-1px); }
+    .btn-primary  { background: var(--accent); color: #fff; }
+    .btn-danger   { background: var(--danger); color: #fff; }
+    .btn-ghost    { background: transparent; color: var(--accent); border: 1.5px solid var(--accent); }
+    .btn-sm       { padding: 5px 12px; font-size: 12px; }
+
+    /* ── Flash Messages ──────────────────────── */
+    .flash-wrap { margin-bottom: 20px; }
+    .flash {
+      padding: 11px 16px;
+      border-radius: var(--radius);
+      font-size: 13px;
+      font-weight: 500;
+      margin-bottom: 8px;
+    }
+    .flash.success { background: #E8F8EF; color: #1A7A43; border-left: 4px solid var(--success); }
+    .flash.error   { background: #FEE8E8; color: #A52828; border-left: 4px solid var(--danger); }
+
+    /* ── Table ───────────────────────────────── */
+    .card {
+      background: var(--surface);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    table { width: 100%; border-collapse: collapse; }
+    thead tr { background: var(--bg); }
+    th {
+      padding: 12px 16px;
+      text-align: left;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .8px;
+      color: var(--muted);
+      border-bottom: 1px solid var(--border);
+    }
+    td {
+      padding: 13px 16px;
+      font-size: 14px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: middle;
+    }
+    tr:last-child td { border-bottom: none; }
+    tbody tr:hover { background: #F9FAFC; }
+
+    .empty-state {
+      text-align: center;
+      padding: 48px 20px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+    .empty-state svg { margin-bottom: 12px; opacity: .4; }
+
+    /* ── Badge ───────────────────────────────── */
+    .badge {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+    .badge-active   { background: #E8F8EF; color: #1A7A43; }
+    .badge-inactive { background: #F4F4F6; color: #888; }
+
+    /* ── Form ────────────────────────────────── */
+    .form-card {
+      background: var(--surface);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      padding: 28px 32px;
+      max-width: 520px;
+    }
+
+    .form-group { margin-bottom: 20px; }
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+    input[type=text], input[type=number], select {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      font-size: 14px;
+      color: var(--text);
+      background: var(--bg);
+      transition: border-color .15s;
+      outline: none;
+    }
+    input[type=text]:focus,
+    input[type=number]:focus,
+    select:focus { border-color: var(--accent); background: #fff; }
+
+    .form-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 24px;
+    }
+
+    .action-cell { display: flex; gap: 8px; }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-brand">Catalog <span>MGR</span></div>
+  <div class="nav-section">Manage</div>
+  <a href="{{ url_for('categories') }}"
+     class="{{ 'active' if request.endpoint and 'categor' in request.endpoint else '' }}">
+    ☰ &nbsp;Categories
+  </a>
+  <a href="{{ url_for('products') }}"
+     class="{{ 'active' if request.endpoint and 'product' in request.endpoint else '' }}">
+    ◈ &nbsp;Products
+  </a>
+</nav>
+
+<main>
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <div class="flash-wrap">
+        {% for category, message in messages %}
+          <div class="flash {{ category }}">{{ message }}</div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}
+
+  {% block content %}{% endblock %}
+</main>
+
+</body>
+</html>

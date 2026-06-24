@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block title %}Products — Catalog MGR{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div>
+    <h1>Products</h1>
+    <p>Manage your product catalog</p>
+  </div>
+  <a href="{{ url_for('add_product') }}" class="btn btn-primary">+ Add Product</a>
+</div>
+
+<div class="card">
+  <table>
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Product Name</th>
+        <th>Category</th>
+        <th>Price</th>
+        <th>Status</th>
+        <th>Created</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% if products %}
+        {% for prod in products %}
+        <tr>
+          <td style="color:var(--muted); font-size:12px;">{{ loop.index }}</td>
+          <td><strong>{{ prod.name }}</strong></td>
+          <td style="color:var(--muted);">
+            {{ prod.category_name if prod.category_name else '—' }}
+          </td>
+          <td>
+            <span style="font-weight:600; color:var(--accent);">
+              ₹{{ '%.2f' % prod.price }}
+            </span>
+          </td>
+          <td>
+            <span class="badge badge-{{ prod.status | lower }}">{{ prod.status }}</span>
+          </td>
+          <td style="color:var(--muted); font-size:12px;">
+            {{ prod.created_at.strftime('%d %b %Y') if prod.created_at else '—' }}
+          </td>
+          <td>
+            <div class="action-cell">
+              <a href="{{ url_for('edit_product', prod_id=prod.id) }}"
+                 class="btn btn-ghost btn-sm">Edit</a>
+              <form action="{{ url_for('delete_product', prod_id=prod.id) }}"
+                    method="POST"
+                    onsubmit="return confirm('Delete this product?');">
+                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+              </form>
+            </div>
+          </td>
+        </tr>
+        {% endfor %}
+      {% else %}
+        <tr>
+          <td colspan="7">
+            <div class="empty-state">
+              No products yet. <a href="{{ url_for('add_product') }}">Add one →</a>
+            </div>
+          </td>
+        </tr>
+      {% endif %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}
