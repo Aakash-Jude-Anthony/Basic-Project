@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>{% block title %}Catalog Manager{% endblock %}</title>
   <style>
-    /* ── Tokens ─────────────────────────────── */
     :root {
       --bg:        #F7F8FA;
       --surface:   #FFFFFF;
@@ -23,9 +22,7 @@
       --radius:    8px;
       --shadow:    0 1px 4px rgba(0,0,0,.08);
     }
-
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     body {
       font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
       background: var(--bg);
@@ -34,17 +31,15 @@
       display: flex;
     }
 
-    /* ── Sidebar Nav ─────────────────────────── */
+    /* ── Sidebar ── */
     nav {
       width: 220px;
       min-height: 100vh;
       background: var(--nav-bg);
       display: flex;
       flex-direction: column;
-      padding: 0;
       flex-shrink: 0;
     }
-
     .nav-brand {
       padding: 24px 20px 20px;
       font-size: 15px;
@@ -54,7 +49,6 @@
       border-bottom: 1px solid rgba(255,255,255,.08);
     }
     .nav-brand span { color: var(--nav-active); }
-
     .nav-section {
       padding: 18px 12px 6px;
       font-size: 10px;
@@ -63,7 +57,6 @@
       color: rgba(200,206,223,.4);
       font-weight: 600;
     }
-
     nav a {
       display: flex;
       align-items: center;
@@ -83,31 +76,66 @@
       font-weight: 600;
     }
 
-    /* ── Main ────────────────────────────────── */
-    main {
-      flex: 1;
-      padding: 32px 36px;
-      overflow-x: auto;
+    /* User info at bottom of nav */
+    .nav-footer {
+      margin-top: auto;
+      padding: 16px;
+      border-top: 1px solid rgba(255,255,255,.08);
     }
+    .nav-user {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    .nav-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--nav-active);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 700;
+      color: #fff;
+      flex-shrink: 0;
+    }
+    .nav-username { font-size: 13px; color: #fff; font-weight: 600; }
+    .nav-role {
+      font-size: 10px;
+      color: var(--nav-text);
+      text-transform: uppercase;
+      letter-spacing: .8px;
+    }
+    .btn-logout {
+      display: block;
+      width: 100%;
+      padding: 8px;
+      text-align: center;
+      background: rgba(232,69,69,.15);
+      color: #FF8080;
+      border: 1px solid rgba(232,69,69,.3);
+      border-radius: var(--radius);
+      font-size: 12px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: background .15s;
+    }
+    .btn-logout:hover { background: rgba(232,69,69,.3); }
 
+    /* ── Main ── */
+    main { flex: 1; padding: 32px 36px; overflow-x: auto; }
     .page-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
       margin-bottom: 24px;
     }
-    .page-header h1 {
-      font-size: 22px;
-      font-weight: 700;
-      color: var(--text);
-    }
-    .page-header p {
-      font-size: 13px;
-      color: var(--muted);
-      margin-top: 2px;
-    }
+    .page-header h1 { font-size: 22px; font-weight: 700; }
+    .page-header p  { font-size: 13px; color: var(--muted); margin-top: 2px; }
 
-    /* ── Buttons ─────────────────────────────── */
+    /* ── Buttons ── */
     .btn {
       display: inline-flex;
       align-items: center;
@@ -122,12 +150,12 @@
       transition: opacity .15s, transform .1s;
     }
     .btn:hover { opacity: .88; transform: translateY(-1px); }
-    .btn-primary  { background: var(--accent); color: #fff; }
-    .btn-danger   { background: var(--danger); color: #fff; }
-    .btn-ghost    { background: transparent; color: var(--accent); border: 1.5px solid var(--accent); }
-    .btn-sm       { padding: 5px 12px; font-size: 12px; }
+    .btn-primary { background: var(--accent); color: #fff; }
+    .btn-danger  { background: var(--danger); color: #fff; }
+    .btn-ghost   { background: transparent; color: var(--accent); border: 1.5px solid var(--accent); }
+    .btn-sm      { padding: 5px 12px; font-size: 12px; }
 
-    /* ── Flash Messages ──────────────────────── */
+    /* ── Flash ── */
     .flash-wrap { margin-bottom: 20px; }
     .flash {
       padding: 11px 16px;
@@ -139,7 +167,7 @@
     .flash.success { background: #E8F8EF; color: #1A7A43; border-left: 4px solid var(--success); }
     .flash.error   { background: #FEE8E8; color: #A52828; border-left: 4px solid var(--danger); }
 
-    /* ── Table ───────────────────────────────── */
+    /* ── Table ── */
     .card {
       background: var(--surface);
       border-radius: var(--radius);
@@ -147,7 +175,6 @@
       box-shadow: var(--shadow);
       overflow: hidden;
     }
-
     table { width: 100%; border-collapse: collapse; }
     thead tr { background: var(--bg); }
     th {
@@ -168,16 +195,14 @@
     }
     tr:last-child td { border-bottom: none; }
     tbody tr:hover { background: #F9FAFC; }
-
     .empty-state {
       text-align: center;
       padding: 48px 20px;
       color: var(--muted);
       font-size: 14px;
     }
-    .empty-state svg { margin-bottom: 12px; opacity: .4; }
 
-    /* ── Badge ───────────────────────────────── */
+    /* ── Badge ── */
     .badge {
       display: inline-block;
       padding: 3px 10px;
@@ -187,8 +212,10 @@
     }
     .badge-active   { background: #E8F8EF; color: #1A7A43; }
     .badge-inactive { background: #F4F4F6; color: #888; }
+    .badge-admin    { background: rgba(79,110,247,.15); color: var(--accent); }
+    .badge-user     { background: #F4F4F6; color: #555; }
 
-    /* ── Form ────────────────────────────────── */
+    /* ── Form ── */
     .form-card {
       background: var(--surface);
       border-radius: var(--radius);
@@ -197,7 +224,6 @@
       padding: 28px 32px;
       max-width: 520px;
     }
-
     .form-group { margin-bottom: 20px; }
     label {
       display: block;
@@ -206,7 +232,10 @@
       color: var(--text);
       margin-bottom: 6px;
     }
-    input[type=text], input[type=number], select {
+    input[type=text],
+    input[type=password],
+    input[type=number],
+    select {
       width: 100%;
       padding: 10px 12px;
       border: 1.5px solid var(--border);
@@ -218,20 +247,16 @@
       outline: none;
     }
     input[type=text]:focus,
+    input[type=password]:focus,
     input[type=number]:focus,
     select:focus { border-color: var(--accent); background: #fff; }
-
-    .form-actions {
-      display: flex;
-      gap: 10px;
-      margin-top: 24px;
-    }
-
-    .action-cell { display: flex; gap: 8px; }
+    .form-actions { display: flex; gap: 10px; margin-top: 24px; }
+    .action-cell  { display: flex; gap: 8px; }
   </style>
 </head>
 <body>
 
+{% if session.user_id %}
 <nav>
   <div class="nav-brand">Catalog <span>MGR</span></div>
   <div class="nav-section">Manage</div>
@@ -243,7 +268,27 @@
      class="{{ 'active' if request.endpoint and 'product' in request.endpoint else '' }}">
     ◈ &nbsp;Products
   </a>
+
+  {% if session.role == 'admin' %}
+  <div class="nav-section">Admin</div>
+  <a href="{{ url_for('users') }}"
+     class="{{ 'active' if request.endpoint and 'user' in request.endpoint else '' }}">
+    ✦ &nbsp;Users
+  </a>
+  {% endif %}
+
+  <div class="nav-footer">
+    <div class="nav-user">
+      <div class="nav-avatar">{{ session.username[0].upper() }}</div>
+      <div>
+        <div class="nav-username">{{ session.username }}</div>
+        <div class="nav-role">{{ session.role }}</div>
+      </div>
+    </div>
+    <a href="{{ url_for('logout') }}" class="btn-logout">Log out</a>
+  </div>
 </nav>
+{% endif %}
 
 <main>
   {% with messages = get_flashed_messages(with_categories=true) %}
@@ -255,7 +300,6 @@
       </div>
     {% endif %}
   {% endwith %}
-
   {% block content %}{% endblock %}
 </main>
 

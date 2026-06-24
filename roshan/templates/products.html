@@ -7,7 +7,9 @@
     <h1>Products</h1>
     <p>Manage your product catalog</p>
   </div>
+  {% if session.role == 'admin' %}
   <a href="{{ url_for('add_product') }}" class="btn btn-primary">+ Add Product</a>
+  {% endif %}
 </div>
 
 <div class="card">
@@ -20,7 +22,7 @@
         <th>Price</th>
         <th>Status</th>
         <th>Created</th>
-        <th>Actions</th>
+        {% if session.role == 'admin' %}<th>Actions</th>{% endif %}
       </tr>
     </thead>
     <tbody>
@@ -43,6 +45,7 @@
           <td style="color:var(--muted); font-size:12px;">
             {{ prod.created_at.strftime('%d %b %Y') if prod.created_at else '—' }}
           </td>
+          {% if session.role == 'admin' %}
           <td>
             <div class="action-cell">
               <a href="{{ url_for('edit_product', prod_id=prod.id) }}"
@@ -54,6 +57,7 @@
               </form>
             </div>
           </td>
+          {% endif %}
         </tr>
         {% endfor %}
       {% else %}
