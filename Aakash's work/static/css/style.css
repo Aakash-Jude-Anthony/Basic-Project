@@ -1,0 +1,291 @@
+/* ==========================================================================
+   style.css — Mini E-Commerce Product Management System
+   ========================================================================== */
+
+:root {
+    --brand-primary: #6366f1;
+    --brand-primary-dark: #4f46e5;
+    --sidebar-bg: #111827;
+    --sidebar-bg-hover: #1f2937;
+    --page-bg: #f4f6fb;
+    --card-radius: 14px;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--page-bg);
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    color: #1f2330;
+}
+
+a {
+    text-decoration: none;
+}
+
+/* ---------------------------------------------------------------------- */
+/* App shell: sidebar + main column                                       */
+/* ---------------------------------------------------------------------- */
+.app-shell {
+    display: flex;
+    min-height: 100vh;
+}
+
+.sidebar {
+    width: 260px;
+    background: var(--sidebar-bg);
+    color: #cbd5e1;
+    flex-shrink: 0;
+    padding: 1.5rem 1rem;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+}
+
+.sidebar-brand {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    color: #fff;
+    font-weight: 700;
+    font-size: 1.15rem;
+    padding: 0.5rem 0.75rem 1.5rem;
+}
+
+.sidebar-brand i {
+    color: var(--brand-primary);
+    font-size: 1.4rem;
+}
+
+.sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.sidebar-nav .nav-link {
+    color: #cbd5e1;
+    padding: 0.65rem 0.9rem;
+    border-radius: 10px;
+    font-size: 0.93rem;
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    transition: background 0.15s ease, color 0.15s ease;
+}
+
+.sidebar-nav .nav-link i {
+    font-size: 1.05rem;
+    width: 20px;
+}
+
+.sidebar-nav .nav-link:hover {
+    background: var(--sidebar-bg-hover);
+    color: #fff;
+}
+
+.sidebar-nav .nav-link.active {
+    background: var(--brand-primary);
+    color: #fff;
+}
+
+.sidebar-divider {
+    border-color: #374151;
+    margin: 0.75rem 0;
+}
+
+.main-col {
+    flex: 1;
+    min-width: 0;
+}
+
+/* ---------------------------------------------------------------------- */
+/* Top bar                                                                 */
+/* ---------------------------------------------------------------------- */
+.topbar {
+    background: #fff;
+    border-bottom: 1px solid #e5e7eb;
+    padding: 1rem 1.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.topbar-title {
+    font-weight: 700;
+    color: #111827;
+}
+
+.page-content {
+    padding: 1.75rem;
+}
+
+/* ---------------------------------------------------------------------- */
+/* Cards                                                                   */
+/* ---------------------------------------------------------------------- */
+.card {
+    border: none;
+    border-radius: var(--card-radius);
+    box-shadow: 0 1px 3px rgba(16, 24, 40, 0.06), 0 1px 2px rgba(16, 24, 40, 0.04);
+}
+
+.stat-card .stat-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    flex-shrink: 0;
+}
+
+.stat-card-blue .stat-icon { background: #e0e7ff; color: #4338ca; }
+.stat-card-purple .stat-icon { background: #f3e8ff; color: #7e22ce; }
+.stat-card-green .stat-icon { background: #dcfce7; color: #15803d; }
+
+.stat-number {
+    font-size: 1.6rem;
+    font-weight: 800;
+    line-height: 1.1;
+    color: #111827;
+}
+
+.stat-label {
+    font-size: 0.85rem;
+    color: #6b7280;
+}
+
+.dash-action-card {
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.dash-action-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 25px rgba(16, 24, 40, 0.1);
+}
+
+.dash-action-icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.7rem;
+    margin: 0 auto;
+}
+
+/* ---------------------------------------------------------------------- */
+/* Tables                                                                  */
+/* ---------------------------------------------------------------------- */
+.table thead th {
+    background: #f9fafb;
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: #6b7280;
+    border-bottom: 1px solid #e5e7eb;
+    padding: 0.85rem 1rem;
+}
+
+.table tbody td {
+    padding: 0.85rem 1rem;
+    font-size: 0.92rem;
+}
+
+/* ---------------------------------------------------------------------- */
+/* Buttons                                                                 */
+/* ---------------------------------------------------------------------- */
+.btn-primary {
+    background-color: var(--brand-primary);
+    border-color: var(--brand-primary);
+}
+
+.btn-primary:hover {
+    background-color: var(--brand-primary-dark);
+    border-color: var(--brand-primary-dark);
+}
+
+/* ---------------------------------------------------------------------- */
+/* Storefront (customer-facing)                                           */
+/* ---------------------------------------------------------------------- */
+.storefront-body {
+    background: var(--page-bg);
+}
+
+.storefront-navbar {
+    background: linear-gradient(120deg, #4f46e5, #6366f1 60%, #818cf8);
+    padding: 0.9rem 0;
+}
+
+.storefront-navbar .navbar-brand {
+    color: #fff;
+    font-weight: 800;
+    font-size: 1.3rem;
+}
+
+.storefront-hero {
+    background: linear-gradient(135deg, #4338ca, #6366f1 55%, #818cf8);
+    color: #fff;
+    padding: 3rem 1rem 4rem;
+}
+
+.storefront-hero h1 {
+    font-weight: 800;
+    font-size: 2.1rem;
+}
+
+.product-card {
+    border-radius: 16px;
+    overflow: hidden;
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.product-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 14px 28px rgba(16, 24, 40, 0.12);
+}
+
+.product-thumb {
+    height: 130px;
+    background: linear-gradient(135deg, #eef2ff, #e0e7ff);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.4rem;
+    color: #818cf8;
+}
+
+.product-price {
+    font-weight: 800;
+    color: #111827;
+    font-size: 1.05rem;
+}
+
+.storefront-footer {
+    background: #111827;
+    color: #9ca3af;
+}
+
+/* ---------------------------------------------------------------------- */
+/* Responsive: collapse sidebar on small screens                          */
+/* ---------------------------------------------------------------------- */
+@media (max-width: 991.98px) {
+    .sidebar {
+        position: fixed;
+        left: -280px;
+        z-index: 1050;
+        transition: left 0.2s ease;
+        box-shadow: 0 0 30px rgba(0,0,0,0.3);
+    }
+    .sidebar.show {
+        left: 0;
+    }
+}
